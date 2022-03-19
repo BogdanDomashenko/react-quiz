@@ -9,21 +9,59 @@ import {
   Radio,
   FormGroup,
   Checkbox,
+  Button,
 } from "@material-ui/core";
 
 const Picture = styled.img`
   max-height: 300px;
 `;
 
-function Question({ text, answers, img }) {
+function useUpdateEffect(effect, dependencies = []) {
+  const isInitialMount = React.useRef(true);
+
+  React.useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+    } else {
+      return effect();
+    }
+  }, dependencies);
+}
+
+function Question({ id, text, answers, img, onSelect }) {
   const [selectedAnswer, setSelectedAnswer] = React.useState(null);
-  const [selectedAnswers, setSelectedAnswers] = React.useState([1, 2]);
+  const [selectedAnswers, setSelectedAnswers] = React.useState([]);
+
+  // React.useEffect(() => {
+  //   if (didMount.current) {
+  //     onSelect(id, selectedAnswer);
+  //   } else {
+  //     didMount.current = true;
+  //   }
+  // }, [selectedAnswer]);
+
+  // React.useEffect(() => {
+  //   if (didMount.current) {
+  //     onSelect(id, selectedAnswers);
+  //   } else {
+  //     didMount.current = true;
+  //   }
+  // }, [selectedAnswers]);
+
+  // useUpdateEffect(() => {
+  //   onSelect(id, selectedAnswers);
+  // }, [selectedAnswers]);
+
+  useUpdateEffect(() => {
+    onSelect(id, selectedAnswers);
+  }, [selectedAnswers]);
 
   const multimplyQuestion =
     answers.filter((answer) => answer.truthful).length > 1;
 
   const selectedAnswerChange = (e) => {
     if (!multimplyQuestion) {
+      setSelectedAnswers([Number(e.target.value)]);
       setSelectedAnswer(Number(e.target.value));
     } else {
       e.target.checked
@@ -39,7 +77,9 @@ function Question({ text, answers, img }) {
   return (
     <div>
       <FormControl>
-        <Typography variant="h5">{text}</Typography>
+        <Typography variant="h5">
+          {id}. {text}
+        </Typography>
         {img && <Picture src={img}></Picture>}
         {!multimplyQuestion ? (
           <RadioGroup

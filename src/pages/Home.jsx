@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Container, Box, Button } from "@material-ui/core";
-import { Question } from "../components";
+import { Questions } from "../components";
 
 function Home() {
   const answersList = [
@@ -13,11 +13,12 @@ function Home() {
   return (
     <Container>
       Open tests
-      <Question
+      <Questions />
+      {/* <Question
         text="deoiwfuiu"
         answers={answersList}
         img="https://cdnimg.rg.ru/img/content/146/91/37/googletranslate-1000_d_850.jpg"
-      />
+      /> */}
     </Container>
   );
 }

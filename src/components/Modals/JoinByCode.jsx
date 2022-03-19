@@ -20,10 +20,16 @@ const buttonsStyle = {
 };
 
 function JoinByCode({ isOpen, setOpen, successfull }) {
+  const [code, setCode] = React.useState("");
+
+  const handleCodeChange = (e) => {
+    setCode(e.target.value);
+  };
+
   const handleClose = () => setOpen(false);
 
   const handleJoin = () => {
-    successfull();
+    successfull(code);
     handleClose();
   };
 
@@ -39,6 +45,8 @@ function JoinByCode({ isOpen, setOpen, successfull }) {
           id="outlined-basic"
           label="Enter code"
           variant="outlined"
+          value={code}
+          onChange={handleCodeChange}
           fullWidth
         />
         <Box sx={buttonsStyle}>
